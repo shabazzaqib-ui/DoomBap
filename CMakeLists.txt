@@ -4,7 +4,7 @@ project(DoomBap VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 
 # Point this to your JUCE path
-add_subdirectory(/path/to/JUCE JUCE)
+add_subdirectory(/path/Daniel/desktop/JUCE JUCE)
 
 juce_add_plugin(DoomBap
     COMPANY_NAME "DoomLabs"
