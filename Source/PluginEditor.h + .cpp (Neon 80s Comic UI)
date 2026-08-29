@@ -1,0 +1,31 @@
+// PluginEditor.h
+#pragma once
+#include <JuceHeader.h>
+#include "PluginProcessor.h"
+
+class DoomBapAudioProcessorEditor : public juce::AudioProcessorEditor
+{
+public:
+    DoomBapAudioProcessorEditor (DoomBapAudioProcessor&);
+    ~DoomBapAudioProcessorEditor() override;
+
+    void paint (juce::Graphics&) override;
+    void resized() override;
+
+private:
+    DoomBapAudioProcessor& processor;
+
+    juce::Slider osc1Wave, osc2Wave, oscMix, subLevel, noiseLevel;
+    juce::Slider cutoff, resonance, drive;
+    juce::Slider attack, decay, sustain, release;
+    juce::Slider tempo, swing;
+    juce::ComboBox presetBox;
+
+    using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
+    std::unique_ptr<Attachment> osc1Att, osc2Att, mixAtt, subAtt, noiseAtt;
+    std::unique_ptr<Attachment> cutAtt, resAtt, driveAtt;
+    std::unique_ptr<Attachment> atkAtt, decAtt, susAtt, relAtt;
+    std::unique_ptr<Attachment> tempoAtt, swingAtt;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DoomBapAudioProcessorEditor)
+};
