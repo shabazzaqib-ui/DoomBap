@@ -29,3 +29,116 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DoomBapAudioProcessorEditor)
 };
+// PluginEditor.cpp
+#include "PluginEditor.h"
+
+DoomBapAudioProcessorEditor::DoomBapAudioProcessorEditor (DoomBapAudioProcessor& p)
+    : AudioProcessorEditor (&p), processor (p)
+{
+    setSize (900, 620);
+
+    auto setupSlider = [this] (juce::Slider& s, const juce::String& name)
+    {
+        s.setSliderStyle (juce::Slider::RotaryHorizontalVerticalDrag);
+        s.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 60, 18);
+        s.setColour (juce::Slider::rotarySliderFillColourId, juce::Colours::magenta);
+        s.setColour (juce::Slider::thumbColourId, juce::Colours::cyan);
+        addAndMakeVisible (s);
+    };
+
+    setupSlider (osc1Wave, "Osc1");
+    setupSlider (osc2Wave, "Osc2");
+    setupSlider (oscMix, "Mix");
+    setupSlider (subLevel, "Sub");
+    setupSlider (noiseLevel, "Noise");
+    setupSlider (cutoff, "Cutoff");
+    setupSlider (resonance, "Reso");
+    setupSlider (drive, "Drive");
+    setupSlider (attack, "Atk");
+    setupSlider (decay, "Dec");
+    setupSlider (sustain, "Sus");
+    setupSlider (release, "Rel");
+    setupSlider (tempo, "BPM");
+    setupSlider (swing, "Swing");
+
+    osc1Att = std::make_unique<Attachment> (processor.apvts, "osc1Wave", osc1Wave);
+    osc2Att = std::make_unique<Attachment> (processor.apvts, "osc2Wave", osc2Wave);
+    mixAtt  = std::make_unique<Attachment> (processor.apvts, "oscMix", oscMix);
+    subAtt  = std::make_unique<Attachment> (processor.apvts, "subLevel", subLevel);
+    noiseAtt= std::make_unique<Attachment> (processor.apvts, "noiseLevel", noiseLevel);
+    cutAtt  = std::make_unique<Attachment> (processor.apvts, "cutoff", cutoff);
+    resAtt  = std::make_unique<Attachment> (processor.apvts, "resonance", resonance);
+    driveAtt= std::make_unique<Attachment> (processor.apvts, "drive", drive);
+    atkAtt  = std::make_unique<Attachment> (processor.apvts, "attack", attack);
+    decAtt  = std::make_unique<Attachment> (processor.apvts, "decay", decay);
+    susAtt  = std::make_unique<Attachment> (processor.apvts, "sustain", sustain);
+    relAtt  = std::make_unique<Attachment> (processor.apvts, "release", release);
+    tempoAtt= std::make_unique<Attachment> (processor.apvts, "tempo", tempo);
+    swingAtt= std::make_unique<Attachment> (processor.apvts, "swing", swing);
+
+    for (int i = 0; i < processor.getNumPrograms(); ++i)
+        presetBox.addItem (processor.getProgramName (i), i + 1);
+    presetBox.setSelectedItemIndex (0);
+    presetBox.onChange = [this] {
+        processor.setCurrentProgram (presetBox.getSelectedItemIndex());
+    };
+    addAndMakeVisible (presetBox);
+}
+
+DoomBapAudioProcessorEditor::~DoomBapAudioProcessorEditor() {}
+
+void DoomBapAudioProcessorEditor::paint (juce::Graphics& g)
+{
+    // 80s comic background
+    g.fillAll (juce::Colour (15, 10, 25));
+
+    // Neon panel borders
+    g.setColour (juce::Colours::magenta.withAlpha (0.8f));
+    g.drawRect (getLocalBounds().reduced (8), 3);
+    g.setColour (juce::Colours::cyan.withAlpha (0.6f));
+    g.drawRect (getLocalBounds().reduced (14), 1);
+
+    g.setFont (juce::Font ("Impact", 32.0f, juce::Font::bold));
+    g.setColour (juce::Colours::magenta);
+    g.drawText ("DOOMBAP", 30, 15, 400, 40, juce::Justification::left);
+
+    g.setFont (16.0f);
+    g.setColour (juce::Colours::cyan);
+    g.drawText ("80s SUPERVILLAIN x GRITTY BOOM-BAP", 30, 50, 500, 20, juce::Justification::left);
+
+    // Section labels
+    g.setColour (juce::Colours::white.withAlpha (0.7f));
+    g.setFont (14.0f);
+    g.drawText ("OSCILLATORS", 40, 90, 200, 20, juce::Justification::left);
+    g.drawText ("FILTER + DIRT", 320, 90, 200, 20, juce::Justification::left);
+    g.drawText ("ENVELOPE", 580, 90, 200, 20, juce::Justification::left);
+    g.drawText ("BOOM-BAP SEQ", 40, 320, 200, 20, juce::Justification::left);
+}
+
+void DoomBapAudioProcessorEditor::resized()
+{
+    auto area = getLocalBounds().reduced (30);
+    presetBox.setBounds (600, 20, 260, 30);
+
+    int y = 120;
+    int w = 80;
+    int gap = 15;
+
+    osc1Wave.setBounds (40, y, w, w + 20);
+    osc2Wave.setBounds (40 + w + gap, y, w, w + 20);
+    oscMix.setBounds (40 + 2*(w+gap), y, w, w + 20);
+    subLevel.setBounds (40 + 3*(w+gap), y, w, w + 20);
+    noiseLevel.setBounds (40 + 4*(w+gap), y, w, w + 20);
+
+    cutoff.setBounds (320, y, w, w + 20);
+    resonance.setBounds (320 + w + gap, y, w, w + 20);
+    drive.setBounds (320 + 2*(w+gap), y, w, w + 20);
+
+    attack.setBounds (580, y, w, w + 20);
+    decay.setBounds (580 + w + gap, y, w, w + 20);
+    sustain.setBounds (580 + 2*(w+gap), y, w, w + 20);
+    release.setBounds (580 + 3*(w+gap), y, w, w + 20);
+
+    tempo.setBounds (40, 360, w, w + 20);
+    swing.setBounds (40 + w + gap, 360, w, w + 20);
+}
