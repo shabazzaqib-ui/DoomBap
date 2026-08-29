@@ -1,0 +1,66 @@
+#pragma once
+#include <JuceHeader.h>
+#include <vector>
+#include <map>
+
+struct DoomPreset
+{
+    juce::String name;
+    float osc1Wave, osc2Wave, oscMix, subLevel, noiseLevel;
+    float cutoff, resonance, drive;
+    float attack, decay, sustain, release;
+    float tempo, swing;
+};
+
+inline std::vector<DoomPreset> getFactoryPresets()
+{
+    return {
+        // Supervillain presets
+        { "Doctor Doom - Latverian Iron", 0, 1, 0.4f, 0.6f, 0.1f, 1800, 0.7f, 8.0f, 0.005f, 0.3f, 0.4f, 0.5f, 88, 0.4f },
+        { "Magneto - Magnetic Force", 1, 2, 0.55f, 0.5f, 0.05f, 2200, 0.85f, 6.5f, 0.01f, 0.4f, 0.5f, 0.6f, 92, 0.35f },
+        { "Galactus - World Eater", 0, 0, 0.3f, 0.8f, 0.25f, 900, 0.6f, 12.0f, 0.02f, 0.6f, 0.7f, 0.8f, 70, 0.2f },
+        { "Apocalypse - Eternal", 3, 1, 0.45f, 0.55f, 0.15f, 1600, 0.75f, 9.0f, 0.008f, 0.35f, 0.45f, 0.55f, 85, 0.4f },
+        { "Green Goblin - Pumpkin Bomb", 2, 4, 0.6f, 0.3f, 0.4f, 3500, 0.5f, 7.0f, 0.001f, 0.15f, 0.2f, 0.3f, 95, 0.45f },
+        { "Venom - Symbiote", 0, 4, 0.5f, 0.7f, 0.35f, 1200, 0.9f, 11.0f, 0.01f, 0.5f, 0.6f, 0.7f, 80, 0.3f },
+        { "Thanos - Infinity", 1, 3, 0.4f, 0.65f, 0.1f, 1400, 0.8f, 10.0f, 0.015f, 0.45f, 0.55f, 0.65f, 75, 0.25f },
+        { "Loki - Trickster", 2, 1, 0.7f, 0.25f, 0.2f, 2800, 0.4f, 5.0f, 0.005f, 0.2f, 0.3f, 0.4f, 100, 0.5f },
+        { "Red Skull - Hydra", 0, 1, 0.35f, 0.5f, 0.18f, 2000, 0.65f, 8.5f, 0.008f, 0.28f, 0.4f, 0.5f, 90, 0.38f },
+        { "Ultron - Metal God", 1, 0, 0.5f, 0.75f, 0.3f, 1100, 0.7f, 13.0f, 0.01f, 0.4f, 0.5f, 0.6f, 85, 0.3f },
+
+        // Boom-bap focused
+        { "Classic BoomBap 90", 0, 1, 0.5f, 0.7f, 0.2f, 1500, 0.6f, 7.5f, 0.005f, 0.2f, 0.25f, 0.35f, 90, 0.42f },
+        { "Dusty Kick Layer", 0, 4, 0.3f, 0.9f, 0.4f, 800, 0.5f, 9.0f, 0.001f, 0.15f, 0.15f, 0.25f, 88, 0.4f },
+        { "Gritty Snare Synth", 2, 4, 0.6f, 0.2f, 0.5f, 4000, 0.3f, 6.0f, 0.001f, 0.1f, 0.1f, 0.2f, 92, 0.45f },
+        { "Sub Boom", 0, 0, 0.2f, 1.0f, 0.05f, 600, 0.4f, 5.0f, 0.01f, 0.3f, 0.4f, 0.5f, 85, 0.35f },
+        { "Chopped Soul", 1, 3, 0.55f, 0.4f, 0.15f, 2200, 0.55f, 4.5f, 0.02f, 0.4f, 0.5f, 0.6f, 87, 0.4f },
+
+        // More unique ones
+        { "Neon Doom City", 2, 0, 0.45f, 0.5f, 0.25f, 2500, 0.7f, 8.0f, 0.01f, 0.25f, 0.35f, 0.45f, 95, 0.4f },
+        { "Cosmic Radiation", 3, 4, 0.5f, 0.3f, 0.45f, 1800, 0.85f, 10.5f, 0.015f, 0.5f, 0.6f, 0.7f, 78, 0.3f },
+        { "Vibranium Bass", 0, 1, 0.35f, 0.85f, 0.1f, 700, 0.65f, 7.0f, 0.008f, 0.35f, 0.45f, 0.55f, 82, 0.35f },
+        { "Psi-Wave", 1, 2, 0.6f, 0.4f, 0.2f, 3000, 0.5f, 5.5f, 0.005f, 0.2f, 0.3f, 0.4f, 98, 0.48f },
+        { "Dark Dimension", 0, 4, 0.4f, 0.6f, 0.35f, 1000, 0.9f, 14.0f, 0.02f, 0.6f, 0.7f, 0.8f, 70, 0.2f },
+
+        // Additional 20 for "hella sounds"
+        { "Sentinel March", 1, 0, 0.5f, 0.55f, 0.12f, 1600, 0.6f, 6.5f, 0.01f, 0.3f, 0.4f, 0.5f, 88, 0.35f },
+        { "Mystique Morph", 2, 3, 0.7f, 0.3f, 0.25f, 2400, 0.45f, 5.0f, 0.005f, 0.15f, 0.25f, 0.35f, 100, 0.5f },
+        { "Sabretooth Claw", 0, 4, 0.45f, 0.5f, 0.4f, 3200, 0.55f, 9.5f, 0.001f, 0.12f, 0.15f, 0.25f, 93, 0.42f },
+        { "Juggernaut Charge", 0, 0, 0.3f, 0.95f, 0.1f, 500, 0.4f, 8.0f, 0.02f, 0.5f, 0.6f, 0.7f, 75, 0.25f },
+        { "Phoenix Force", 3, 1, 0.5f, 0.45f, 0.3f, 2800, 0.75f, 7.5f, 0.01f, 0.35f, 0.45f, 0.55f, 90, 0.4f },
+        { "Kingpin Empire", 1, 1, 0.4f, 0.6f, 0.15f, 1400, 0.65f, 6.0f, 0.008f, 0.28f, 0.38f, 0.48f, 86, 0.38f },
+        { "Bullseye Precision", 2, 2, 0.55f, 0.25f, 0.2f, 3500, 0.35f, 4.0f, 0.001f, 0.08f, 0.1f, 0.2f, 105, 0.55f },
+        { "Dormammu Dark", 0, 4, 0.35f, 0.7f, 0.4f, 900, 0.95f, 15.0f, 0.025f, 0.7f, 0.8f, 0.9f, 65, 0.15f },
+        { "Mephisto Deal", 1, 3, 0.5f, 0.5f, 0.25f, 1700, 0.7f, 9.0f, 0.015f, 0.4f, 0.5f, 0.6f, 80, 0.3f },
+        { "Annihilus Zone", 0, 1, 0.4f, 0.8f, 0.2f, 1100, 0.8f, 11.0f, 0.01f, 0.45f, 0.55f, 0.65f, 78, 0.28f },
+        { "Blackheart Hell", 4, 0, 0.6f, 0.55f, 0.5f, 1300, 0.85f, 12.5f, 0.02f, 0.55f, 0.65f, 0.75f, 72, 0.22f },
+        { "Taskmaster Drill", 2, 1, 0.65f, 0.35f, 0.15f, 2600, 0.5f, 5.5f, 0.003f, 0.12f, 0.2f, 0.3f, 98, 0.48f },
+        { "Rhino Stampede", 0, 0, 0.25f, 1.0f, 0.08f, 450, 0.35f, 7.0f, 0.015f, 0.4f, 0.5f, 0.6f, 80, 0.3f },
+        { "Shocker Blast", 1, 4, 0.5f, 0.4f, 0.35f, 3000, 0.6f, 8.5f, 0.001f, 0.1f, 0.15f, 0.25f, 95, 0.45f },
+        { "Vulture Dive", 3, 2, 0.55f, 0.3f, 0.2f, 2200, 0.45f, 4.5f, 0.005f, 0.18f, 0.25f, 0.35f, 102, 0.5f },
+        { "Mysterio Illusion", 2, 3, 0.7f, 0.25f, 0.3f, 2700, 0.4f, 5.0f, 0.01f, 0.25f, 0.35f, 0.45f, 90, 0.4f },
+        { "Kraven Hunt", 0, 1, 0.45f, 0.6f, 0.18f, 1900, 0.65f, 7.0f, 0.008f, 0.3f, 0.4f, 0.5f, 88, 0.38f },
+        { "Electro Surge", 1, 4, 0.5f, 0.45f, 0.4f, 3400, 0.7f, 10.0f, 0.001f, 0.08f, 0.12f, 0.2f, 100, 0.5f },
+        { "Scorpion Sting", 2, 0, 0.4f, 0.5f, 0.25f, 2100, 0.55f, 6.5f, 0.005f, 0.2f, 0.3f, 0.4f, 92, 0.42f },
+        { "Final Doom", 0, 1, 0.4f, 0.75f, 0.2f, 1000, 0.9f, 14.0f, 0.02f, 0.6f, 0.7f, 0.85f, 70, 0.2f }
+    };
+}
